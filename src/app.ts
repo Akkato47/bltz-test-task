@@ -17,15 +17,3 @@ schedule("0 * * * *", async () => {
         logger.error(`Ошибка при выполнении работы:\n${error}`);
     }
 });
-
-// FOR TESTING ONLY
-// async function hourlyJob() {
-//     try {
-//         await fetchBoxTariffsJob();
-//         await updateSheetsJob();
-//     } catch (error) {
-//         logger.error(`Ошибка при выполнении работы:\n${error}`);
-//     }
-// }
-
-// await hourlyJob();
