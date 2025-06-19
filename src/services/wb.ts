@@ -16,10 +16,8 @@ const wbApi = axios.create({
 export async function getBoxTariffs() {
     try {
         const response = await wbApi.get("/tariffs/box");
-        console.log(response.data?.response?.data.warehouseList);
         return response.data?.response?.data;
     } catch (error) {
-        console.error("Неудалось", error);
         throw error;
     }
 }
