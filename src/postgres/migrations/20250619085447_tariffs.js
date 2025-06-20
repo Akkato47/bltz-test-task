@@ -18,8 +18,6 @@ export async function up(knex) {
         table.decimal("storage_per_liter", 10, 2).notNullable();
 
         table.timestamp("updated_at").defaultTo(knex.fn.now());
-
-        table.unique(["date_from", "warehouse_name"]);
     });
 }
 

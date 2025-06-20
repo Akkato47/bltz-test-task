@@ -2,6 +2,7 @@ import env from "#config/env/env.js";
 import knex from "#postgres/knex.js";
 import { serviceAccountAuth } from "#services/googlesheets.js";
 import { getCurrentDateISO } from "#utils/dateISO.js";
+import { logger } from "#utils/logger.js";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
 export async function updateSheetsJob(): Promise<void> {
@@ -32,6 +33,7 @@ export async function updateSheetsJob(): Promise<void> {
         t.storage_base.toString(),
         t.storage_per_liter.toString(),
     ]);
+
     for (const spreadId of spreadIds) {
         const doc = new GoogleSpreadsheet(spreadId.spreadsheet_id, serviceAccountAuth);
         await doc.loadInfo();
@@ -53,6 +55,7 @@ export async function updateSheetsJob(): Promise<void> {
 
         await sheet.addRows(values, { raw: true, insert: true });
     }
+    logger.info("Spreadsheets updated succesfuly!");
 }
 
 async function getLastTariffs() {

@@ -9,10 +9,12 @@ await seed.run();
 logger.info("All migrations and seeds have been run");
 
 // 0 * * * * - Every hour
-schedule("0 * * * *", async () => {
+schedule("* * * * *", async () => {
+    logger.info("Running box tariffs update...");
     try {
-        await fetchBoxTariffsJob();
-        await updateSheetsJob();
+        if (await fetchBoxTariffsJob()) {
+            await updateSheetsJob();
+        }
     } catch (error) {
         logger.error(`Ошибка при выполнении работы:\n${error}`);
     }

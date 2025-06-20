@@ -1,16 +1,16 @@
 import knex from "#postgres/knex.js";
 import { getBoxTariffs } from "#services/wb.js";
 import { getCurrentDateISO } from "#utils/dateISO.js";
+import { logger } from "#utils/logger.js";
 
 function parseNumber(str: string): number {
     return Number.parseFloat(str.replace(",", "."));
 }
 
-export async function fetchBoxTariffsJob(): Promise<void> {
+export async function fetchBoxTariffsJob(): Promise<boolean> {
     await deleteByDate(getCurrentDateISO());
 
     const data = await getBoxTariffs();
-
     const { dtNextBox, dtTillMax, warehouseList } = data;
 
     for (const warehouse of warehouseList) {
@@ -27,8 +27,10 @@ export async function fetchBoxTariffsJob(): Promise<void> {
             storage_per_liter: parseNumber(boxStorageLiter),
         };
 
-        await knex("tariffs").insert(row).onConflict(["date_from", "warehouse_name"]).merge();
+        await knex("tariffs").insert(row);
     }
+    logger.info("Box tariffs fetched succesfuly!");
+    return true;
 }
 
 async function deleteByDate(date: string) {
