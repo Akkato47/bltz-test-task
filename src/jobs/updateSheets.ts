@@ -4,7 +4,7 @@ import { serviceAccountAuth } from "#services/googlesheets.js";
 import { getCurrentDateISO } from "#utils/dateISO.js";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
-export async function updateSheetsJob() {
+export async function updateSheetsJob(): Promise<void> {
     const spreadIds = await knex.select("*").from("spreadsheets");
     if (spreadIds.length === 0) return;
 
