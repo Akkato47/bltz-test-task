@@ -39,16 +39,16 @@ export async function updateSheetsJob() {
         if (!sheet) {
             sheet = await doc.addSheet({ title: env.GOOGLE_SHEET_TITLE, headerValues: header });
         } else {
-            // await sheet.clear();
-            // await sheet.setHeaderRow(header);
-            const rows = await sheet.getRows();
+            await sheet.clear();
+            await sheet.setHeaderRow(header);
+            // const rows = await sheet.getRows();
 
-            // FIXME: Works tooooo slow
-            for (const row of rows) {
-                if (row.get("updated_at") === getCurrentDateISO()) {
-                    await row.delete();
-                }
-            }
+            // Works tooooo slow
+            // for (const row of rows) {
+            //     if (row.get("updated_at") === getCurrentDateISO()) {
+            //         await row.delete();
+            //     }
+            // }
         }
 
         await sheet.addRows(values, { raw: true, insert: true });
